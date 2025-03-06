@@ -5,7 +5,7 @@ defmodule Pont.Consumer do
 
   # ✅ Schedule Map (Channel IDs and Times for Specific Days)
   @schedule %{
-    [:mon, :thu] => %{channel_id: 1345668774145032224, hour: 11, minute: 59},
+    [:mon, :thu] => %{channel_id: 1345668774145032224, hour: 18, minute: 45},
     [:tue, :sat] => %{channel_id: 1345668774145032224, hour: 18, minute: 45},
     [:wed, :fri] => %{channel_id: 1345668774145032224, hour: 18, minute: 45}
   }

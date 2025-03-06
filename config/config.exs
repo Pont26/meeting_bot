@@ -2,7 +2,6 @@ import Config
 
 config :nostrum,
   token: System.get_env("DISCORD_BOT_TOKEN"),
-  gateway: "wss://gateway.discord.gg",
   gateway_intents: [:guilds, :guild_messages]
 
 # ✅ Ensure Elixir uses tzdata for timezone conversions
