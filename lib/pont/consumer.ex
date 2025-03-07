@@ -1,17 +1,15 @@
 defmodule Pont.Consumer do
-  use Nostrum.Consumer  # ✅ Registers bot as an event consumer
+  use Nostrum.Consumer
+  @timezone "Asia/Yangon"
 
-  @timezone "Asia/Yangon"  # Change this to your actual time zone
-
-  # ✅ Schedule Map (Channel IDs and Times for Specific Days)
   @schedule %{
     [:mon, :thu] => %{channel_id: 1345668774145032224, hour: 18, minute: 45},
     [:tue, :sat] => %{channel_id: 1345668774145032224, hour: 18, minute: 45},
-    [:wed, :fri] => %{channel_id: 1345668774145032224, hour: 18, minute: 45}
+    [:wed, :fri] => %{channel_id: 1345668774145032224, hour: 8, minute: 42}
   }
 
-  # ✅ Called when the bot is ready
   @spec handle_event(any()) :: :ok
+
   def handle_event({:READY, _data, _ws_state}) do
     IO.puts("✅ Bot is ready! Checking schedule...")
 
@@ -24,7 +22,7 @@ defmodule Pont.Consumer do
 
   def handle_event(_event), do: :ok
 
-  # ✅ Get today's day as an atom (e.g., :mon, :tue, :wed)
+
   defp today_atom do
     {:ok, local_now} = DateTime.now(@timezone)
     local_now
@@ -32,7 +30,6 @@ defmodule Pont.Consumer do
     |> day_number_to_atom()
   end
 
-  # ✅ Convert day number (1-7) to atom (:mon, :tue, :wed, etc.)
   defp day_number_to_atom(1), do: :mon
   defp day_number_to_atom(2), do: :tue
   defp day_number_to_atom(3), do: :wed
@@ -41,7 +38,6 @@ defmodule Pont.Consumer do
   defp day_number_to_atom(6), do: :sat
   defp day_number_to_atom(7), do: :sun
 
-  # ✅ Function to schedule a message
   defp schedule_message_at(channel_id, hour, minute) do
     {:ok, local_now} = DateTime.now(@timezone)
 
@@ -62,7 +58,7 @@ defmodule Pont.Consumer do
 
         Task.start(fn ->
           Process.sleep(delay)  # Wait until the scheduled time
-          message = "@everyone Now it's #{hour}:#{minute} meeting will be start at 7PM 🚀"
+          message = "@everyone Now it's #{hour}:#{minute} meeting will be start at 7PM "
           send_message(channel_id, message)
         end)
 
@@ -71,7 +67,6 @@ defmodule Pont.Consumer do
     end
   end
 
-  # ✅ Function to send messages
   defp send_message(channel_id, content) do
     case Nostrum.Api.Message.create(channel_id, content) do
       {:ok, _msg} -> IO.puts("✅ Message sent successfully to #{channel_id}: #{content}")
